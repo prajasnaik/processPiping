@@ -116,7 +116,7 @@ ProcessCommandLine(char *commandLineArguments[], int argCount)
             break;
         }
     } 
-    if(!(fGenerator || fConsumer))
+    if(!(fGenerator && fConsumer))
     {
         char *buf = "\nNo generator or consumer executable path specified, please use -g/-c flag to provide path.\n";
         ec = write(STDOUT_FILENO, buf, strlen(buf));
@@ -303,7 +303,7 @@ VectorizeString(char *optionsString, char *path)
 int 
 Help()
 {
-    char *helpMessage = "\n\tUsage:\n\t./my_ipc -g <GeneratorExecutablePath> -c <GeneratorExecutablePath> -a <ConsumerOptionsString> -o <ConsumerOptionsString>\n\tFor more info, please refer to README file\n";
+    char *helpMessage = "\n\tUsage:\n\t./my_ipc -g <GeneratorExecutablePath> -c <GeneratorExecutablePath> -a <GeneratorOptionsString> -o <ConsumerOptionsString>\n\tFor more info, please refer to README file\n";
     int length = strlen(helpMessage);
     int error = write(STDOUT_FILENO, helpMessage, length);
     if (error == E_GENERAL)
