@@ -31,8 +31,11 @@ int         fConsumerOptions        =   DISABLE;
 // Buffer pointers for storing paths for each function
 char *      generatorExecutablePath;
 char *      consumerExecutablePath;
+
+// Buffers for storing options
 char *      generatorOptions;
 char *      consumerOptions;
+
 
 int         PipeExecutables     (char *, char *);
 int         ProcessCommandLine  (char **, int);
@@ -40,8 +43,9 @@ int         PerformOperations   ();
 int         Help                ();
 char **     VectorizeString     (char *, char *);
 
-
-int main(int argc, char *argv[])
+// Main function
+int 
+main(int argc, char *argv[])
 {
     if (argc == 1)
     {
@@ -80,7 +84,7 @@ ProcessCommandLine(char *commandLineArguments[], int argCount)
         switch (commandLineArguments[argno][1])
         {
         case 'g':
-            if(argno + 1 == argCount)
+            if(argno + 1 == argCount) //Ensures that path is provided
             {
                 return E_GENERAL;
             }
@@ -89,21 +93,21 @@ ProcessCommandLine(char *commandLineArguments[], int argCount)
             argno += 2;
             break;
         case 'a':
-            if (argno + 1 == argCount)
+            if (argno + 1 == argCount) //Ensures that path is provided
                 return E_GENERAL;
             fGeneratorOptions = ENABLE;
             generatorOptions = commandLineArguments[argno + 1];
             argno += 2;
             break;
         case 'o':
-            if (argno + 1 == argCount)
+            if (argno + 1 == argCount) //Ensures that path is provided
                 return E_GENERAL;
             fConsumerOptions = ENABLE;
             consumerOptions = commandLineArguments[argno + 1];
             argno += 2;
             break;
         case 'c':
-            if(argno + 1 == argCount)
+            if(argno + 1 == argCount) //Ensures that path is provided
             {
                 return E_GENERAL;
             }
@@ -116,7 +120,7 @@ ProcessCommandLine(char *commandLineArguments[], int argCount)
             break;
         }
     } 
-    if(!(fGenerator && fConsumer))
+    if(!(fGenerator && fConsumer)) //If Consumer or Generator path not specified, return
     {
         char *buf = "\nNo generator or consumer executable path specified, please use -g/-c flag to provide path.\n";
         ec = write(STDOUT_FILENO, buf, strlen(buf));
@@ -310,19 +314,3 @@ Help()
         return errno;
     return E_OK;
 }
-
-//  function: PrintError
-//      This function takes an error code that occurred during a program's
-//      execution and prints a message onto standard output
-//  @param: integer error code that needs to be printed
-//  @return: integer error code 
-// int
-// PrintError(int errorCode)
-// {
-//     char buffer[MAX_SIZE];
-//     snprintf(buffer, MAX_SIZE, "\nError Code of C program: %d\n", errorCode);
-//     ec = write(STDOUT_FILENO, buffer, strlen(buffer));
-//     if (ec == E_GENERAL)
-//         return errno;
-//     return E_OK;
-// }
